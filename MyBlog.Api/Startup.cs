@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyBlog.Api.Filters;
 
 namespace MyBlog.Api
 {
@@ -25,6 +26,12 @@ namespace MyBlog.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+#if DEBUG
+            services.AddTransient<IStartupFilter, DevDatabaseInitFilter>();
+#else
+            services.AddTransient<IStartupFilter, DatabaseInitFilter>();
+#endif
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
