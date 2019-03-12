@@ -1,21 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
-using MyBlog.Api;
 using MyBlog.Api.DataAccess.Models;
 using Newtonsoft.Json;
 using Xunit;
 
 namespace MyBlog.Integration.Tests
 {
-    public class PostsControllerTests : IClassFixture<WebApplicationFactory<Startup>>
+    public class PostsControllerTests : IClassFixture<TestWebApplicationFactory>
     {
         private readonly HttpClient _client;
 
-        public PostsControllerTests(WebApplicationFactory<Startup> factory)
+        public PostsControllerTests(TestWebApplicationFactory factory)
         {
             _client = factory.CreateClient();
         }
