@@ -30,16 +30,37 @@ namespace MyBlog.Api
         public void ConfigureServices(IServiceCollection services)
         {
 #if DEBUG
-            services.AddTransient<IStartupFilter, DevDatabaseInitFilter>();
+            RegisterDevDepdendencies(services);
 #else
-            services.AddTransient<IStartupFilter, DatabaseInitFilter>();
+            RegisterDependencies(services);
 #endif
 
-            RegisterDepdendencies(services);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         private void RegisterDepdendencies(IServiceCollection services)
+        {
+            //
+            // Register configurations
+            //
+            services.AddSingleton(provider =>
+            {
+                var connectionString = Configuration["BlogConnectionString"];
+                var dbConfig = new DatabaseConfig {ConnectionString = connectionString};
+
+                return dbConfig;
+            });
+            //
+            // Register repositories
+            //
+            services.AddTransient<IPostsRepository, PostsRepository>();
+            //
+            // Register filters
+            //
+            services.AddTransient<IStartupFilter, DatabaseInitFilter>();
+        }
+
+        private void RegisterDevDepdendencies(IServiceCollection services)
         {
             //
             // Register configurations
@@ -54,6 +75,11 @@ namespace MyBlog.Api
             // Register repositories
             //
             services.AddTransient<IPostsRepository, PostsRepository>();
+            //
+            // Register filters
+            //
+            services.AddTransient<IStartupFilter, DevDatabaseInitFilter>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
