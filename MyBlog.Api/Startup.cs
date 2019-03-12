@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyBlog.Api.Configs;
+using MyBlog.Api.DataAccess.Abstractions;
+using MyBlog.Api.DataAccess.Repositories;
 using MyBlog.Api.Filters;
 
 namespace MyBlog.Api
@@ -32,7 +35,25 @@ namespace MyBlog.Api
             services.AddTransient<IStartupFilter, DatabaseInitFilter>();
 #endif
 
+            RegisterDepdendencies(services);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        }
+
+        private void RegisterDepdendencies(IServiceCollection services)
+        {
+            //
+            // Register configurations
+            //
+            services.Configure<DatabaseConfig>(Configuration.GetSection("DatabaseConfig"));
+            services.AddSingleton(provider =>
+            {
+                var dbConfig = provider.GetRequiredService<IOptions<DatabaseConfig>>().Value;
+                return dbConfig;
+            });
+            //
+            // Register repositories
+            //
+            services.AddTransient<IPostsRepository, PostsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
