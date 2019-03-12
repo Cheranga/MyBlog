@@ -27,14 +27,15 @@ namespace MyBlog.Api
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-#if DEBUG
             RegisterDevDepdendencies(services);
-#else
-            RegisterDependencies(services);
-#endif
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        }
 
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            RegisterDependencies(services);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -43,12 +44,12 @@ namespace MyBlog.Api
             //
             // Register configurations
             //
+            services.Configure<DatabaseConfig>(Configuration.GetSection("DatabaseConfig"));
             services.AddSingleton(provider =>
             {
-                var connectionString = Configuration["BlogConnectionString"];
-                var dbConfig = new DatabaseConfig {ConnectionString = connectionString};
-
-                return dbConfig;
+                var dbConfig = provider.GetRequiredService<IOptions<DatabaseConfig>>().Value;
+                var connectionString = Configuration[dbConfig.ConnectionString];
+                return new DatabaseConfig { ConnectionString = connectionString };
             });
             //
             // Register repositories
