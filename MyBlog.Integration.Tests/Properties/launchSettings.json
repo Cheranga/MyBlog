@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MyBlog.Integration.Tests": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
+    }
+  }
+}
