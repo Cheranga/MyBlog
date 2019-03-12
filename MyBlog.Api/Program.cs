@@ -9,6 +9,7 @@ namespace MyBlog.Api
 {
     public class Program
     {
+        private static string AzureKeyVaultUrl = nameof(AzureKeyVaultUrl);
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
@@ -17,14 +18,16 @@ namespace MyBlog.Api
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(builder =>
+                .ConfigureAppConfiguration((context, builder) =>
                 {
-                    var tokenProvider = new AzureServiceTokenProvider();
-                    var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(tokenProvider.KeyVaultTokenCallback));
-                    //
-                    // TODO: Get the key vault URL from configuration
-                    //
-                    builder.AddAzureKeyVault(@"https://mystash.vault.azure.net", keyVaultClient, new DefaultKeyVaultSecretManager());
+                    if (!context.HostingEnvironment.IsDevelopment())
+                    {
+                        var akvUrl = builder.Build()[AzureKeyVaultUrl];
+                        var tokenProvider = new AzureServiceTokenProvider();
+                        var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(tokenProvider.KeyVaultTokenCallback));
+                        
+                        builder.AddAzureKeyVault(akvUrl, keyVaultClient, new DefaultKeyVaultSecretManager());
+                    }
                 })
                 .UseStartup<Startup>();
         }

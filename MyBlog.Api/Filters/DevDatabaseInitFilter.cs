@@ -21,10 +21,6 @@ namespace MyBlog.Api.Filters
 
         public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
         {
-            //
-            // TODO: Get this from the configuration depending on the "environment"
-            //
-
             EnsureDatabase.For.SqlDatabase(_connectionString);
 
             var dbUpgradeEngineBuilder = DeployChanges.To

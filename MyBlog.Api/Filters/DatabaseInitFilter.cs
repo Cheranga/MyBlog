@@ -2,7 +2,6 @@
 using DbUp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using MyBlog.Api.Configs;
 
 namespace MyBlog.Api.Filters
@@ -19,20 +18,6 @@ namespace MyBlog.Api.Filters
             {
                 throw new ArgumentNullException(nameof(config));
             }
-
-            //if (configuration == null)
-            //{
-            //    throw new ArgumentNullException(nameof(configuration));
-            //}
-            ////
-            //// TODO: Get the connection string from a strongly typed object
-            ////
-            //_connectionString = configuration["BlogConnectionString"];
-
-            //if (string.IsNullOrWhiteSpace(_connectionString))
-            //{
-            //    throw new Exception("Invalid connection string");
-            //}
         }
 
         public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
