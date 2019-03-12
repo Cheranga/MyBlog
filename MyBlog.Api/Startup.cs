@@ -38,7 +38,7 @@ namespace MyBlog.Api
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
-        private void RegisterDepdendencies(IServiceCollection services)
+        private void RegisterDependencies(IServiceCollection services)
         {
             //
             // Register configurations
