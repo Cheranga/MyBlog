@@ -1,7 +1,0 @@
-{
-  "profiles": {
-    "MyBlog.Integration.Tests": {
-      "commandName": "Project"
-    }
-  }
-}
