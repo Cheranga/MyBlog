@@ -2,6 +2,7 @@
 using DbUp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using MyBlog.Api.Configs;
 
 namespace MyBlog.Api.Filters
@@ -11,7 +12,7 @@ namespace MyBlog.Api.Filters
         private readonly string _connectionString;
 
         public DatabaseInitFilter(DatabaseConfig config)
-        {
+        {   
             _connectionString = config?.ConnectionString;
 
             if (string.IsNullOrEmpty(_connectionString))
