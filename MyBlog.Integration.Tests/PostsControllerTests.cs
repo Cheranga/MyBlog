@@ -17,6 +17,7 @@ namespace MyBlog.Integration.Tests
         [Fact]
         public async Task Must_Have_Posts()
         {
+            
             //
             // Arrange and Act
             //
