@@ -34,9 +34,15 @@ namespace MyBlog.Api.DataAccess.Repositories
             }
         }
 
-        public Task<Post> GetPostAsync(int postId)
+        public async Task<Post> GetPostAsync(int postId)
         {
-            throw new NotImplementedException();
+            const string query = "SELECT * FROM Posts where postid=@postId";
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var post = await connection.QueryFirstAsync<Post>(query,new{postId}).ConfigureAwait(false);
+                return post;
+            }
         }
 
         public Task<bool> AddPostAsync(Post post)
