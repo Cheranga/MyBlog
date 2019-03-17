@@ -27,5 +27,17 @@ namespace MyBlog.Api.Controllers
 
             return Ok(posts);
         }
+
+        [HttpGet("{postId}")]
+        public async Task<IActionResult> Get([FromRoute]int postId)
+        {
+            var post = await _postsRepository.GetPostAsync(postId).ConfigureAwait(false);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(post);
+        }
     }
 }
