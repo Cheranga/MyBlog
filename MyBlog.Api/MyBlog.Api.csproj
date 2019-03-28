@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Business\" />
+    <Folder Include="DTO\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

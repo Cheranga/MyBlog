@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.Api.DataAccess.Abstractions;
-using MyBlog.Api.DataAccess.Models;
-using MyBlog.Api.DTO;
 
 namespace MyBlog.Api.Controllers
 {
@@ -41,6 +39,5 @@ namespace MyBlog.Api.Controllers
 
             return Ok(post);
         }
-
     }
 }
